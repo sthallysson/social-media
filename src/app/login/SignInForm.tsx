@@ -1,6 +1,8 @@
 'use client';
 
+import { signIn } from 'next-auth/react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
@@ -21,6 +23,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { useToast } from '@/components/ui/use-toast';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -43,9 +46,36 @@ export function SignInForm() {
     },
   });
 
-  function onSubmit(data: z.infer<typeof SignInSchema>) {
-    console.log(data);
+  const router = useRouter();
+  const { toast } = useToast();
+
+  async function onSubmit({ email, password }: z.infer<typeof SignInSchema>) {
+    console.log(email, password);
+    try {
+      const response = await signIn('credentials', {
+        redirect: false,
+        email,
+        password,
+      });
+
+      console.log('[LOGIN_RESPONSE]: ', response);
+
+      if (!response?.error) {
+        router.refresh();
+        router.push('/');
+      } else {
+        toast({
+          description: (
+            <p className="text-white font-semibold">Email ou senha invalidos</p>
+          ),
+          variant: 'destructive',
+        });
+      }
+    } catch (error) {
+      console.log('Login Error:', error);
+    }
   }
+
   return (
     <Card className="w-[350px]">
       <CardHeader>

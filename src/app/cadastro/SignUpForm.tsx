@@ -23,6 +23,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
 
+import { api } from '@/services/api';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
@@ -51,6 +52,13 @@ export function SignUpForm() {
   const { toast } = useToast();
   function onSubmit(data: z.infer<typeof FormSchema>) {
     console.log(data);
+    try {
+      const user = { ...data, id: crypto.randomUUID(), role: 'admin' };
+      api.post('/users', user);
+    } catch (error) {
+      console.log(error);
+    }
+
     toast({
       title: 'You submitted the following values:',
       description: (
