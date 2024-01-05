@@ -1,0 +1,18 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "email": "user@email.com",
+      "password": "123456",
+      "name": "John Doe",
+      "role": "admin"
+    },
+    {
+      "name": "Thallysson Silva",
+      "email": "sthallysson5@gmail.com",
+      "password": "qazwsxedc",
+      "id": "cff0fd8d-3620-402a-9f5a-5e2a4a6e948c",
+      "role": "admin"
+    }
+  ]
+}
